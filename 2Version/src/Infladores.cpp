@@ -1,10 +1,14 @@
 #include "infladores.h"
 #include "Globos.h"
+#include "Particulas.h"
 #include "NoEntiendo.hpp"
 #include <stdlib.h>
 
 Globos	*globosInflados[100];
+Particulas	*particulasCreadas[100];
 int	numInflados = 0;
+int	numParticulas = 0;
+
 Infladores	*CreaInflador(float x, float y, int c)
 {
 	Infladores	*ptr = (Infladores *)malloc(sizeof(Infladores));
@@ -31,12 +35,16 @@ int	ChocaConInflador(Infladores *inf, float rx, float ry)
 void	InflarGlobo(Infladores *inf)
 {
 	Globos	*g;
+	Particulas	*p;
 
+	p = CreaParticula(inf->posX, inf->posY);
 	g = CreaGlobo(inf->posX, inf->posY, inf->color);
 	PonVelocidadGlobo(g, 0, -200);
 
+	particulasCreadas[numParticulas] = p;
 	globosInflados[numInflados] = g;
 	numInflados++;
+	numParticulas++;
 }
 
 void	ActualizaInflador(Infladores	*inf)
@@ -59,4 +67,16 @@ void	ActualizaGlobosInflados()
 {
 	for (int i = 0; i < numInflados; i++)
 		ActualizaGlobo(globosInflados[i]);
+}
+
+void	DibujaParticulaInflador()
+{
+	for (int i = 0; i < numParticulas; i++)
+		DibujaParticula(particulasCreadas[i]);
+}
+
+void	ActualizaParticulaInflador()
+{
+	for (int i = 0; i < numParticulas; i++)
+		ActualizaParticula(particulasCreadas[i]);
 }
